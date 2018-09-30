@@ -442,39 +442,55 @@ function savePost(e){
        return;
     }
   }
+  //trial
+    function refreshDiv() { //make sure braces are on the same line as the block statement, it's a good convention in JS
 
-  $.ajax({
-    url: '/savepost',
-    type : 'post',
-    data : new FormData(this),
-    processData : false,
-    contentType : false,
-    dataType : 'json',
-    success : function(response){
-      if(!response.success){
-        window.alert(response.msg);
-      }
-      if(response.success){
-        var post = response.post;
-        var html = `<div class="row posts my-1">
+        document.getElementById("getelebyid").innerHTML = "Some <strong>HTML</strong> <em>string</em>" ;
+        console.log("checking refresh");
+    }
+
+    window.setInterval(refreshDiv, 3000);
+
+
+//function savePost() {
+    $.ajax({
+        url: '/savepost',
+        type: 'post',
+        data: new FormData(this),
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function (response) {
+            if (!response.success) {
+                window.alert(response.msg);
+            }
+            if (response.success) {
+                var post = response.post;
+                var html = `<div class="row posts my-1">
                     <div class="col-12 col-md-6 col-lg-5 py-2 post mb-2">
                         <div class="post-header user-info row">
                             <div class="col-9 col-md-8">`;
-        if(post.owner.image && post.owner.image.includes("http")){
-           html +=   `<img src="${post.owner.image}" alt="${post.owner.fullname}" class="mb-2 rounded">`;
-        } else {
-           html +=   `<img src="../images/profile/${post.owner.image}" alt="${post.owner.fullname}" class="mb-2 rounded">`
-        }
+                if (post.owner.image && post.owner.image.includes("http")) {
+                    html += `<img src="${post.owner.image}" alt="${post.owner.fullname}" class="mb-2 rounded">`;
+                } else {
+                    html += `<img src="../images/profile/${post.owner.image}" alt="${post.owner.fullname}" class="mb-2 rounded">`
+                }
 
-          html +=  `<span class="ml-2" style="color:rgba(0,0,0,0.5)">${post.owner.fullname}</span>
-                      </div>
+                html += `<span class="ml-2" style="color:rgba(0,0,0,0.5)">${post.owner.fullname}</span>
+               
+                      </div>`;
+                html += ` <div class="col-3 col-md-4 py-2 mod-center">`;
+                html += `<span class="time" style="font-weight:100;">${post.todate}</span> </div>
                     </div>
                     <div class="post-body mt-2">
                       <a href="/post/${post._id}" style="display:block;">
-                        <img src="../images/posts/${post.image}" alt="<%= ${post.owner.fullname} %>" class="img-fluid">
+                        <img src="${post.image}" alt="" class="image-fluid">
                       </a>
+                      
                         <p class="lead mt-2">${post.body}</p>
+                        
                     </div>
+                    
                     <div class="post-footer py-2 px-2">
                         <div class="row">
                             <div class="col-8">
@@ -503,32 +519,33 @@ function savePost(e){
                 </div>
         </div>`;
 
-        document.querySelector('#postsParent').innerHTML =  html + document.querySelector('#postsParent').innerHTML;
-      }
-       postForm.reset();
-       progressBar.style.width = '0';
-       progressBar.textContent = "";
-    },
-    xhr : function(){
-      let xhr = new XMLHttpRequest();
-          xhr.upload.addEventListener('progress', function(e){
-              if(imgDialog.files[0]){
-                if(!validateFile()){
-                  return;
+                document.querySelector('#postsParent').innerHTML = html + document.querySelector('#postsParent').innerHTML;
+            }
+            postForm.reset();
+            progressBar.style.width = '0';
+            progressBar.textContent = "";
+        },
+        xhr: function () {
+            let xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener('progress', function (e) {
+                if (imgDialog.files[0]) {
+                    if (!validateFile()) {
+                        return;
+                    }
+                } else {
+                    return;
                 }
-              }else{
-                return;
-              }
-              if(e.lengthComputable){
-                var percent = Math.round((e.loaded/e.total)*100);
-                progressBar.style.width = `${percent}%`;
-                progressBar.textContent = `${percent}%`;
-              }
-          },false);
-      return xhr;
-    }
-  });
-
+                if (e.lengthComputable) {
+                    var percent = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = `${percent}%`;
+                    progressBar.textContent = `${percent}%`;
+                }
+            }, false);
+            return xhr;
+        }
+    });
+//}
+//setInterval(savePost,2000);
 }
 
 

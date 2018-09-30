@@ -12,6 +12,7 @@ var postSchema = new Schema({
 				 comment : String
 			   }],
 	date   : {type:Date,default:Date.now()},
+	todate : {type:String,default:new Date().toLocaleDateString()},
 	owner  : Object
 });
 

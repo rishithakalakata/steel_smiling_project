@@ -11,6 +11,7 @@ var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 var moment = require('moment');
 
+
 var User   = require('./models/user');
 
 /*
@@ -139,6 +140,7 @@ var search = require('./routes/search');
 var token  = require('./routes/tokens');
 var post  = require('./routes/post');
 var messages = require('./routes/chat');
+var resource = require('./routes/resource');
 
 
 app.use('/', index);
@@ -147,11 +149,13 @@ app.use('/', search);
 app.use('/', token);
 app.use('/', post);
 app.use('/', messages);
+app.use('/', resource);
 
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+    console.log("I am here");
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -162,7 +166,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  console.log(err);
   // render the error page
   res.status(err.status || 500);
   res.render('error',{title:'Error 404',header:false});

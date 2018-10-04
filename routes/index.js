@@ -110,7 +110,7 @@ router.post('/sendToken',function(req,res,next){
                                 {$set: {resetToken:hash,expireToken:Date.now() + 60*30*1000}},
                                 (err,user)=>{
                                     
-                                    if(err) data = {msg:"Something went wrong.",success:false};
+                                    if(err) data = {msg:"Something went ghghgh wrong.",success:false};
 
                                     if(user) data = {msg:"Check your email for the reset link.",success:true};
                                         
@@ -118,7 +118,7 @@ router.post('/sendToken',function(req,res,next){
                         });
 
                     }).catch(function(err){
-                         var data = {msg:"Something went wrong.",param:"",success:false};
+                         var data = {msg:"Something went here wrong.",param:"",success:false};
                          res.send(data);
                     });
 
@@ -141,31 +141,38 @@ router.post('/sendToken',function(req,res,next){
 /* Post Login - Local */
 
 router.post('/login',middleware.login_valid,passport.authenticate('local.login',{
-    successRedirect : '/home',
-    failureRedirect : '/',
-    failureFlash    : true
-}));
+        successRedirect : '/home',
+        failureRedirect : '/',
+        failureFlash    : true
+    }));
 
 
 /* POST Register User */
 
 router.post('/register',middleware.reg_valid,function(req,res,next){
-	
-	var hash = methods.token(req.body.email);
+    console.log("hey there");
+    var hash = methods.token(req.body.email);
 
     var userData = {
     		fullname  	 : req.body.fullname,
     		username  	 : req.body.username,
     		email 	  	 : req.body.email,
     		password  	 : bcrypt.hashSync(req.body.password, 10),
+            status :"1",
     		accountToken : hash
     };
 
+    console.log("email" +userData.email);
+    var newUser = new User(userData);
+    newUser.save((err) => {
+        var data = {msg:"Account created successfully.Check your email for activation.",success:true};
+        res.send(data);
+    });
     /**  
     *  Sending activation tokento user for account activation. - START
     **/
 
-     var mailOptions = {
+     /*var mailOptions = {
             from     : 'Steel Smiling',
             to       :  userData.email, 
             subject  : 'Account Acivation', 
@@ -173,18 +180,19 @@ router.post('/register',middleware.reg_valid,function(req,res,next){
                         <p>Hello <b>${userData.fullname}</b>.<br>Your account has been successfully created and to make 
                         a use of it you have to activate your account by clicking <a href="https://testingmode.herokuapp.com/activate/${userData.username}/${userData.accountToken}">here</a>.</p>
                         `
-        };
+        };*/
 
-        methods.sendMail(mailOptions).then(function(info){
+        /*methods.sendMail(mailOptions).then(function(info){
             var newUser = new User(userData);
+            console.log("newUser"+newUser);
             newUser.save((err) => {
                 var data = {msg:"Account created successfully.Check your email for activation.",success:true};
                 res.send(data);
             });
         }).catch(function(err){
-             var data = {msg:"Something went wrong.",param:"",success:false};
+             var data = {msg:"Something 989 went wrong.",param:"",success:false};
              res.send(data);
-        });
+        });*/
 
     /**  
     *  Sending activation tokento user for account activation. - END
@@ -214,7 +222,7 @@ router.post('/reset/:user/:token',function(req,res,next){
                 {$set:{expireToken: Date.now(),resetToken: "",password:bcrypt.hashSync(req.body.newPassword, 10)}},
                 (err,user) => {
                     if(err) throw err;
-                    if(!user) req.flash('error','Something went wrong.');
+                    if(!user) req.flash('error','Something went 657 wrong.');
                     if(user) req.flash('success','Password reset successfully.');
                     res.redirect('/');
 

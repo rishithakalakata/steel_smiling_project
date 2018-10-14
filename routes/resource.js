@@ -38,9 +38,10 @@ router.post('/saveresource',function(req,res,next) {
     async.waterfall([
         function (callback) {
             var newResource = new Resource();
-            newResource.name = name;
-            newResource.description = description;
             newResource.website = website;
+            newResource.description = description;
+            newResource.name = name;
+
             newResource.save((err, data) => {
                 if (err) res.send({msg: "Something went wrong", success: false});
                 if (data) callback(null, data);

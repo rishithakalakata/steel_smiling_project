@@ -1,16 +1,47 @@
 <% layout('layout/layout') %>
 
+
 <div class="container user-form py-5">
     <span class="site-logo my-3">Community Network Resources</span>
-</div>
 
-<div>
-    <div class="container single-post">
-        <% for(var i=0;i<resources.length;i++){ %>
-        <div class="post-thumbnail col-4">
-            <p><%= resources[i].name%></p>
-            <p><%= resources[i].description%></p>
-            <p><%= resources[i].website%></p>
-        <% } %>
-    </div>
-</div>
+<div class="container">
+
+     <div class="row">
+      <% for(var i=0;i<resources.length;i++){ %>
+         <div class="col-xs-12 col-sm-6 col-md-4">
+
+             <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+
+                 <div class="mainflip">
+
+                     <div class="frontside">
+
+                         <div class="card">
+
+                             <div class="card-body text-center">
+
+                                 <p><img class=" img-fluid" src="../images/logo.jpg" alt="card image"></p>
+                                 <h4 class="card-title"><%= resources[i].name%></h4>
+                                 <h5 class="card-title"><%= resources[i].description%></h5>
+                                  <a href ="#"  class="card-title"></a>
+                                 <a href = <%= resources[i].website%> id="singlebutton" name="singlebutton" class="btn btn-primary center-block">
+                                    Read More!</a>
+
+                                 <br></br>         </div>
+                         </div>
+ <br></br>
+                     </div>
+
+
+
+                 </div>
+
+             </div>
+         </div>
+
+
+      <% } %>
+
+     </div>
+ </div>
+ </div>

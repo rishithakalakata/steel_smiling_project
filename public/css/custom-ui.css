@@ -1,4 +1,82 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+                                                                                                                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+                                                                                                                                                                                              <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+                                                                                                                                                                                                                                                     .services_panel .panel{min-height: 377px;border: 1px solid #eea236;border-top:3px solid #eea236 !important;background: #fbfbfb;margin-top:10%;}
+.services_panel .panel img{width:115px;}
+.services_panel .panel .btn{width: 235px;margin-top: 25px;background: #f2f2f2;color: #333;border-bottom: 3px solid #e6e6e6;}
+.services_panel .panel .btn:hover{border-bottom: 2px solid #e6e6e6;}
+/* This is for flipping card in resource */
 
+
+.red-text {
+  color: red;
+}
+
+h2 {
+  font-family: Lobster, Monospace;
+}
+
+p {
+  font-size: 16px;
+  font-family: Monospace;
+}
+
+.thick-green-border {
+  border-color: green;
+  border-width: 10px;
+  border-style: solid;
+  border-radius: 50%;
+}
+
+.smaller-image {
+  width: 100px;
+}
+.iconDetails {
+  margin-left:2%;
+  float:left;
+  height:40px;
+  width:40px;
+}
+
+.container2 {
+  width:270px;
+  height:auto;
+  padding:1%;
+  float:left;
+}
+h4{margin:0}
+.left {float:left;width:45px;}
+.right {float:left;margin:0 0 0 5px;width:215px;}
+
+.post-container {
+  margin: 23px 30px 0 0;
+  border: 3px solid #eee;
+  overflow: auto
+}
+.post-thumb {
+  float: left
+}
+.post-thumb img {
+  display: block
+}
+.post-content {
+  float: left;
+  flex-wrap: wrap;
+  text-align: left;
+
+}
+.post-title {
+  font-weight: bold;
+  font-size: 150%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-content: center;
+  align-content: center;
+
+
+}
 /*Base Elements Styling*/
 
 body{

@@ -23,16 +23,22 @@ var session = require('express-session');
 
 var mongoose = require('mongoose');
 var mongoStore = require('connect-mongo')(session);
+var mongoURI = "mongodb://localhost:4000/someNetwork";
+//var mongostore= mongoose.connect(mongoURI).connection;
+//mongoStore.on('error',function(){
+ //   console.log("mongoose connection open");
+//});
 
-mongoose.connect("mongodb://localhost:27017/someNetwork");
+
+mongoose.connect('mongodb://localhost:4000/someNetwork');
 mongoose.Promise = global.Promise;
 
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-//   console.log("Connection open");
-// });
+ db.once('open', function() {
+   console.log("Connection open");
+ });
 
 require('./secure/passport');
 
@@ -141,6 +147,7 @@ var token  = require('./routes/tokens');
 var post  = require('./routes/post');
 var messages = require('./routes/chat');
 var resource = require('./routes/resource');
+var resourceupload = require('./routes/resourceupload');
 
 
 app.use('/', index);
@@ -150,12 +157,12 @@ app.use('/', token);
 app.use('/', post);
 app.use('/', messages);
 app.use('/', resource);
-
+app.use('/', resourceupload);
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    console.log("I am here");
+    //console.log("I am here");
   var err = new Error('Not Found');
   err.status = 404;
   next(err);

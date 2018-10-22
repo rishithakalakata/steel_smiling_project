@@ -1,0 +1,16 @@
+<% layout('layout/layout') %>
+
+<div class="container user-form py-5">
+    <span class="site-logo my-3">Community Network Resources</span>
+</div>
+
+<div>
+    <div class="container single-post">
+        <% for(var i=0;i<resources.length;i++){ %>
+        <div class="post-thumbnail col-4">
+            <p><%= resources[i].name%></p>
+            <p><%= resources[i].description%></p>
+            <p><%= resources[i].website%></p>
+        <% } %>
+    </div>
+</div>

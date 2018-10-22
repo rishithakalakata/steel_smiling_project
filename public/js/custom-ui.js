@@ -68,7 +68,13 @@ function toggleSubMenu(){
   sub.classList.toggle('sh-panel');
 }
 
+function deleteAlert() {
+   //window.confirm("Deleteing");
+   //return true;
 
+    var result = window.confirm("Deleteing");
+    alert(result);
+}
 
 if(bell) bell.addEventListener('click',showPanel);
 if(setting) setting.addEventListener('click',showSettings);
@@ -138,7 +144,16 @@ function loadHTML(e){
 
                   <div class="col-12 col-md-10 mx-auto mt-3 py-5" style="border-top:1px solid #dcdcdc;">
                       <p class="lead">I want to delete my account and all the details right now.</p>
-                      <a href="/delete/${data.id}" class="btn bg-btn btn-dlt">Delete my Account</a>
+                      
+
+                      <a href="/delete/${data.id}" onclick="return confirm('are you sure?')" class="btn bg-btn btn-dlt">Delete my Account</a>
+                      <!--<button onclick="myFunction()">Try it</button>
+                        <script>
+                            function myFunction() {
+                                confirm("Press a button!");
+                            }
+                        </script> -->
+                      <!--<a href="/delete/${data.id}" onclick="return confirm('Are you sure you want to delete this item?');"></a> -->
                   </div>
               </div>`;
 

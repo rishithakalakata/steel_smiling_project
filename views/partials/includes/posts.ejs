@@ -6,7 +6,7 @@
 
             <div class="col-9 col-md-8">
 
-                <a href="/profile/<%=posts[i].owner.userID %>">
+                <a href="/post/<%=posts[i]._id %>">
 
 
                     <img src="<%= posts[i].owner.image %>" alt="" class="mb-2 rounded">
@@ -29,7 +29,7 @@
 
         <div class="post-body mt-2" name="myposts">
 
-            <a href="/profile/<%=posts[i].owner.userID %>">
+            <a href="/post/<%=posts[i]._id %>">
 
                 <img src="<%= posts[i].image %>" alt="" class="img-fluid">
 

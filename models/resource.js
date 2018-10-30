@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var Schema  = mongoose.Schema;
 
 var resourceSchema = new Schema({
-    name : String,
+    website : {type:String,trim:true},
     description : {type:String,trim:true},
-    website : String,
+    name : {type:String,trim:true},
 });
 
 var Resource = mongoose.model('resource',resourceSchema);

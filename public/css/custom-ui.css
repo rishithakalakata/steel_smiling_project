@@ -3,22 +3,28 @@
                                                                                                                                                                                               <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
                                                                                                                                                                                                                                                      .services_panel .panel{min-height: 377px;border: 1px solid #eea236;border-top:3px solid #eea236 !important;background: #fbfbfb;margin-top:10%;}
 .services_panel .panel img{width:115px;}
-.services_panel .panel .btn{width: 235px;margin-top: 25px;background: #f2f2f2;color: #333;border-bottom: 3px solid #e6e6e6;}
+.services_panel .panel .btn{width: 235px;margin-top: 25px;background: #f2f2f2;color: #333;border-bottom: 3px solid #e6e6e6;word-break:break-all;}
 .services_panel .panel .btn:hover{border-bottom: 2px solid #e6e6e6;}
 /* This is for flipping card in resource */
+div.card-title {
+  white-space: nowrap;
+  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
-
+}
 .red-text {
   color: red;
 }
 
 h2 {
-  font-family: Lobster, Monospace;
+  font-size: 12px;
+  font-family: American Typewriter, serif;
 }
 
 p {
-  font-size: 16px;
-  font-family: Monospace;
+  font-size: 12px;
+  font-family: American Typewriter, serif;
 }
 
 .thick-green-border {
@@ -43,6 +49,9 @@ p {
   height:auto;
   padding:1%;
   float:left;
+  word-break:break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 h4{margin:0}
 .left {float:left;width:45px;}
@@ -51,18 +60,24 @@ h4{margin:0}
 .post-container {
   margin: 23px 30px 0 0;
   border: 3px solid #eee;
-  overflow: auto
+  word-break:break-all;
+  text-overflow: ellipsis;
+
 }
 .post-thumb {
-  float: left
+  word-break:break-all;
+  float: left;
 }
 .post-thumb img {
-  display: block
+  display: block;
+  word-break:break-all;
 }
 .post-content {
   float: left;
   flex-wrap: wrap;
   text-align: left;
+  word-break:break-all;
+  text-overflow: ellipsis;
 
 }
 .post-title {
@@ -70,12 +85,17 @@ h4{margin:0}
   font-size: 150%;
   display: -webkit-flex;
   display: flex;
+  word-break:break-all;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   -webkit-align-content: center;
   align-content: center;
 
 
+}
+.panel-body  {
+  word-break:break-all;
+  text-overflow: ellipsis;
 }
 /*Base Elements Styling*/
 
@@ -173,7 +193,7 @@ li{
 .alert{
   color: #fff;
   transition: 700ms ease-in;
-  border-color: none;
+  border-color:none;
   border: none;
 }
 

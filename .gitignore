@@ -1,4 +1,4 @@
 node_modules
-secure/smtpCred.js
+secure/smtp-cred.js
 public/images/**/*
 .idea

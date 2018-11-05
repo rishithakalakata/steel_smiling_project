@@ -13,6 +13,7 @@ var moment = require('moment');
 
 
 var User   = require('./models/user');
+var Referral   = require('./models/referral');
 
 /*
 * Database connectivity with mongoose -- START
@@ -112,7 +113,39 @@ app.use(validator({
 
       });
 
-    }
+    },
+
+      isExist_referralcodeval : function(referralcode){
+
+          return new Promise(function(resolve,reject){
+              Referral.findOne({'referralCodeval':referralcode},(err,referralcode) => {
+                  if(err) throw err;
+
+                  if(referralcode == null){
+                      return reject();
+                  };
+                  return resolve()
+              });
+
+          });
+
+      },
+
+      isExist_referralcodegen : function(referralcode){
+
+          return new Promise(function(resolve,reject){
+              Referral.findOne({'referralCodegen':referralcode},(err,referralcode) => {
+                  if(err) throw err;
+
+                  if(referralcode == null){
+                      return reject();
+                  };
+                  return resolve()
+              });
+
+          });
+
+      }
 
  }
 }));
@@ -148,6 +181,10 @@ var post  = require('./routes/post');
 var messages = require('./routes/chat');
 var resource = require('./routes/resource');
 var resourceupload = require('./routes/resourceupload');
+<<<<<<< HEAD
+var donate = require('./routes/donate');
+=======
+>>>>>>> 005b9914838c96c96787172c4df1477298589e73
 
 
 app.use('/', index);
@@ -158,11 +195,18 @@ app.use('/', post);
 app.use('/', messages);
 app.use('/', resource);
 app.use('/', resourceupload);
+<<<<<<< HEAD
+app.use('/', donate);
+=======
+>>>>>>> 005b9914838c96c96787172c4df1477298589e73
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+<<<<<<< HEAD
+=======
     //console.log("I am here");
+>>>>>>> 005b9914838c96c96787172c4df1477298589e73
   var err = new Error('Not Found');
   err.status = 404;
   next(err);

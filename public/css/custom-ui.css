@@ -1,6 +1,6 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-                                                                                                                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-                                                                                                                                                                                              <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+                                                                                                                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> 
+                                                                                                                                                                                                                                                                                                              <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
                                                                                                                                                                                                                                                      .services_panel .panel{min-height: 377px;border: 1px solid #eea236;border-top:3px solid #eea236 !important;background: #fbfbfb;margin-top:10%;}
 .services_panel .panel img{width:115px;}
 .services_panel .panel .btn{width: 235px;margin-top: 25px;background: #f2f2f2;color: #333;border-bottom: 3px solid #e6e6e6;word-break:break-all;}

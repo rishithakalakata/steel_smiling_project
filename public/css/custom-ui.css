@@ -7,11 +7,53 @@
 .services_panel .panel .btn:hover{border-bottom: 2px solid #e6e6e6;}
 /* This is for flipping card in resource */
 div.card-title {
+  color: #3f51b5;
   white-space: nowrap;
   width: auto;
   overflow: hidden;
   text-overflow: ellipsis;
+}
 
+.card-custom{
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius:20px;
+  border-color:#adadad;
+}
+
+.resourceName{
+   align-content: center;
+  text-align: center;
+   font-weight: bold;
+   height: 30px;
+   width: 300px;
+   border: #2F80ED;
+   vertical-align: middle;
+ }
+
+.resourceDesc{
+  align-content: left;
+  border: #2F80ED;
+  width: 300px;
+  height: 75px;
+  vertical-align: middle;
+}
+
+.resourceHead{
+  font-weight: bold;
+  height: 30px;
+  border: #2F80ED;
+  margin-right: 2px;
 }
 .red-text {
   color: red;
@@ -57,46 +99,6 @@ h4{margin:0}
 .left {float:left;width:45px;}
 .right {float:left;margin:0 0 0 5px;width:215px;}
 
-.post-container {
-  margin: 23px 30px 0 0;
-  border: 3px solid #eee;
-  word-break:break-all;
-  text-overflow: ellipsis;
-
-}
-.post-thumb {
-  word-break:break-all;
-  float: left;
-}
-.post-thumb img {
-  display: block;
-  word-break:break-all;
-}
-.post-content {
-  float: left;
-  flex-wrap: wrap;
-  text-align: left;
-  word-break:break-all;
-  text-overflow: ellipsis;
-
-}
-.post-title {
-  font-weight: bold;
-  font-size: 150%;
-  display: -webkit-flex;
-  display: flex;
-  word-break:break-all;
-  -webkit-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-align-content: center;
-  align-content: center;
-
-
-}
-.panel-body  {
-  word-break:break-all;
-  text-overflow: ellipsis;
-}
 /*Base Elements Styling*/
 
 body{
@@ -122,6 +124,20 @@ a:focus{
 .form-control:focus{
   outline: none;
   border-color: transparent;
+}
+
+.filter:active, .filter.active,
+.show > .filter.dropdown-toggle {
+  color: #292b2c;
+  background-color: #e6e6e6;
+  background-image: none;
+  border-color: #adadad;
+}
+
+.img-resources{
+  margin-top: 10px;
+  max-width: 300px;
+  height: 200px;
 }
 
 button{
@@ -193,7 +209,7 @@ li{
 .alert{
   color: #fff;
   transition: 700ms ease-in;
-  border-color:none;
+  border-color: none;
   border: none;
 }
 
@@ -627,12 +643,12 @@ a.active{
   background: linear-gradient(to left, #4776E6 , #8E54E9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-
 .user-form .site-logo{
   font-size: 1.8em;
   color: #fff;
   display: block;
 }
+
 
 .user-form p{
   color: #fff;
@@ -985,12 +1001,11 @@ span.lead{
   background: #56CCF2;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  padding: 10px;
-  width: border-box;
+  padding: 10px 20px;
+  width: auto;
   margin: 2%;
   clear: both;
   border-radius: 5px;
-  overflow-wrap: break-spaces;
 }
 
 .incoming{
@@ -1003,7 +1018,7 @@ span.lead{
 }
 
 .outgoing{
-  background: lightgoldenrodyellow;
+  background: #fff;
   box-shadow: 0 0 2px 0px rgba(0,0,0,0.2);
   float: right;
 }
@@ -1015,8 +1030,7 @@ span.lead{
   right: 0;
   border-top:1px solid #dcdcdc;
   height: 50px;
-  max-height: fit-content;
-  overflow-wrap: break-spaces;
+  max-height: 50px;
 }
 
 .chatForm .form-control{
@@ -1027,11 +1041,10 @@ span.lead{
 
 .chatForm .form-control:focus{
   border:none;
-
 }
 
 .btn-send{
-  background: rgba(2,117,216,9);
+  background: 
 }
 
 

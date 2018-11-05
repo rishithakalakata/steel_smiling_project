@@ -2,49 +2,60 @@
 
 
 <div class="container user-form py-5">
-<br>
-  <a href="/resourceupload" class="btn btn-outline-primary" style="float: right" ><span>Create Resource</span></a>
-</br>
-    <span class="site-logo my-3">Community Network Resources</span>
+    <br>
+    <a href="/resourceupload" class="btn btn-outline-primary" style="float: right" ><span>Create Resource</span></a>
+    </br>
+    <span class="site-logo my-3">Network Resources</span>
+    <form id="filterForm" class="filter-form">
+    <div style="margin-bottom: 2%">
+        <select class="custom-select" name="category" id="category">
+            <option selected>Filter by location:</option>
+            <option value="Pittsburgh">Pittsburgh</option>
+            <option value="Pennsylvania">Pennsylvania</option>
+            <option value="Outside Pennsylvania">Outside Pennsylvania</option>
+        </select>
+        <a href ="" id="filterbutton" name="filterbutton" class="btn btn-outline-primary">
+            Filter</a>
+    </div>
+    </form>
 
-<div class="container">
+    <div class="container">
 
-     <div class="row">
-      <% for(var i=0;i<resources.length;i++){ %>
-         <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="row">
+            <% for(var i=0;i<resources.length;i++){ %>
+            <div class="col-xs-12 col-sm-6 col-md-4">
 
-             <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
 
-                 <div class="mainflip">
+                    <div class="mainflip">
 
-                     <div class="frontside">
+                        <div class="frontside">
 
-                         <div class="card">
+                            <div class="card-custom">
 
-                             <div class="card-body text-center">
+                                <div class="card-body text-center">
+                                    <img src="<%= resources[i].image %>" alt="" class="img-resources">
+                                    <div class="card-title"><b><%= resources[i].name%></b></div>
+                                    <div id="greetings" class="card-title"><textarea readonly class="resourceDesc"><%= resources[i].description%></textarea></div>
+                                    <a href ="#"  class="card-title"></a>
+                                    <a href = <%= resources[i].website%> id="singlebutton" name="singlebutton" class="btn btn-primary">
+                                        Read More!</a>
 
-                                 <p><img class=" img-fluid" src="../images/logo.jpg" alt="card image"></p>
-                                  <div class="card-title">Name:<%= resources[i].name%></div>
-                                  <div id="greetings" class="card-title">Description:<%= resources[i].description%></div>
-                                  <a href ="#"  class="card-title"></a>
-                                 <a href = <%= resources[i].website%> id="singlebutton" name="singlebutton" class="btn btn-primary center-block">
-                                    Read More!</a>
-
-                                 <br></br>         </div>
-                         </div>
- <br></br>
-                     </div>
-
+                                    <br></br>         </div>
+                            </div>
+                            <br></br>
+                        </div>
 
 
-                 </div>
 
-             </div>
-         </div>
+                    </div>
+
+                </div>
+            </div>
 
 
-      <% } %>
+            <% } %>
 
-     </div>
- </div>
- </div>
+        </div>
+    </div>
+</div>

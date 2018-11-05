@@ -65,7 +65,6 @@ function reg_valid(req,res,next){
 }
 
 function login_valid(req,res,next){
-
     if(req.body.email == "" || req.body.password == ""){
          req.flash('error','All fields are mandatory.');
 	     res.redirect('/');
@@ -118,8 +117,8 @@ function update_Valid(req,res,next){
 		'bio'      : {
 						notEmpty : true, 
 						isLength : {
-							options : [{ min:25,max:120}],
-							errorMessage : "Bio should be between 25-120 characters"
+							options : [{ min:1,max:256}],
+							errorMessage : "Profile Description should be between 1-256 characters"
 						},
 						errorMessage: 'Bio is required'
 

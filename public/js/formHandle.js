@@ -4,7 +4,8 @@
 // declaration
 
 const signup = document.querySelector('#signup');
-const resourceupload = document.querySelector('.resourceupload');
+const referral = document.querySelector('#referral');
+const validatereferral = document.querySelector('#referralval');
 const resetToken  = document.querySelector('#reset');
 const signIn = document.querySelector('#signIn');
 const updateBtn = document.querySelector('.btn-save');
@@ -12,91 +13,14 @@ const searchBtn = document.querySelector('.searchUser');
 const flwParent = document.querySelector('#flw-delg');
 const followers = document.querySelector('.followers');
 const postForm = document.querySelector('#post-form');
+const resourceForm = document.querySelector('#resource-form');
 const sendBtn = document.querySelector('.btn-send');
 const notifBtn = document.querySelectorAll('.notif-btn');
-
-
+const filterBtn = document.querySelector('.filter-button')
 
 // formHandling functions
 
 function register_user(e){
-
-	// stop default action
-	e.preventDefault();
-
-	const  button = this.children[this.children.length-1];
-
-	//Form Handling with ajax
-
-	$.ajax({
-
-		url      : '/register',
-		method 	 : 'POST',
-		data   	 :  $(this).serialize(),
-		dataType :  'json',
-
-		beforeSend : function(http){
-			button.style.opacity = '0.7';
-      button.innerText = 'Submitting';
-			button.setAttribute("disabled", "true");
-		},
-		success    : function(response,status,http){
-			let message = response.msg,
-				element = response.param,
-				success = response.success,
-				id      = "error",
-				icon   = "fa-times-circle",
-				flashModal = document.querySelector('#flashModal .modal-body');
-
-			if(element)  document.querySelector(`[name=${element}]`).value = "" ;
-
-			if(success) {
-				id = "success";
-				icon = "fa-check-square";
-			    document.querySelector("form").reset();
-			}
-
-			flashModal.innerHTML = `<div id="${id}" class="flash">
-                        			  <i class="fa ${icon}"></i>
-                          			  <p class="lead" style="color:#a9a9a9">${message}</p>
-                      				</div>`;
-
-            //show flashModal
-            $('#flashModal').modal('show');
-
-           if(success){
-           		 window.addEventListener("click", function(){
-           		 	 window.location.href = "/";
-            	 });
-           }
-
-
-      // set as default
-      button.style.opacity = '1';
-      button.innerText = 'Sign up';
-			button.removeAttribute("disabled");
-
-
-		},
-
-		error  : function(http,status,error){
-		        console.log("Error:"+error);
-				flashModal.innerHTML = `<div id="error" class="flash">
-                        			 		 <i class="fa fa-times-circle"></i>
-                          			  		<p class="lead" style="color:#a9a9a9">Something went wrong here.</p>
-                      					</div>`;
-                // set as default
-	            button.style.opacity = '1';
-				button.removeAttribute("disabled");
-		}
-
-	});
-
-}
-
-
-function upload_resource(e){
-    console.log("Inside upload res:")   ;
     // stop default action
     e.preventDefault();
 
@@ -105,11 +29,93 @@ function upload_resource(e){
     //Form Handling with ajax
 
     $.ajax({
-
-        url      : '/saveresource',
+        url      : '/register',
         method 	 : 'POST',
         data   	 :  $(this).serialize(),
         dataType :  'json',
+
+        beforeSend : function(http){
+            button.style.opacity = '0.7';
+            button.innerText = 'Submitting';
+            button.setAttribute("disabled", "true");
+        },
+        success    : function(response,status,http){
+            let message = response.msg,
+                element = response.param,
+                success = response.success,
+                id      = "error",
+                icon   = "fa-times-circle",
+                flashModal = document.querySelector('#flashModal .modal-body');
+
+            if(element)  document.querySelector(`[name=${element}]`).value = "" ;
+
+            if(success) {
+                id = "success";
+                icon = "fa-check-square";
+                document.querySelector("form").reset();
+            }
+
+            flashModal.innerHTML = `<div id="${id}" class="flash">
+                        			  <i class="fa ${icon}"></i>
+                          			  <p class="lead" style="color:#a9a9a9">${message}</p>
+                      				</div>`;
+
+            //show flashModal
+            $('#flashModal').modal('show');
+
+            if(success){
+                window.addEventListener("click", function(){
+                    window.location.href = "/";
+                });
+            }
+
+
+            // set as default
+            button.style.opacity = '1';
+            button.innerText = 'Sign up';
+            button.removeAttribute("disabled");
+
+
+        },
+
+        error  : function(http,status,error){
+            console.log("Error:"+error);
+            flashModal.innerHTML = `<div id="error" class="flash">
+                        			 		 <i class="fa fa-times-circle"></i>
+                          			  		<p class="lead" style="color:#a9a9a9">Something went wrong here.</p>
+                      					</div>`;
+            // set as default
+            button.style.opacity = '1';
+            button.removeAttribute("disabled");
+        }
+
+    });
+
+}
+
+function upload_resource(e){
+    console.log("Inside upload res:")   ;
+    // stop default action
+    e.preventDefault();
+    if(imgDialog.files[0]){
+        if(!validateFile()){
+            window.alert("Invalid file type.");
+            return;
+        }
+    }
+
+    const  button = this.children[this.children.length-1];
+
+    //Form Handling with ajax
+
+    $.ajax({
+
+        url      : '/saveresource',
+        type: 'post',
+        data: new FormData(this),
+        processData: false,
+        contentType: false,
+        dataType: 'json',
 
         beforeSend : function(http){
             button.style.opacity = '0.7';
@@ -171,52 +177,189 @@ function upload_resource(e){
 
 }
 
+function send_referrallink(e){
+    // stop default action
+    e.preventDefault();
+
+    const  button = this.children[this.children.length-1];
+
+    //Form Handling with ajax
+
+    $.ajax({
+
+        url      : '/referral',
+        method 	 : 'POST',
+        data   	 :  $(this).serialize(),
+        dataType :  'json',
+
+        beforeSend : function(http){
+            button.style.opacity = '0.7';
+            button.innerText = 'Submitting';
+            button.setAttribute("disabled", "true");
+        },
+        success    : function(response,status,http){
+            let message = response.msg,
+                element = response.param,
+                success = response.success,
+                id      = "error",
+                icon   = "fa-times-circle",
+                flashModal = document.querySelector('#flashModal .modal-body');
+
+            if(element)  document.querySelector(`[name=${element}]`).value = "" ;
+
+            if(success) {
+                id = "success";
+                icon = "fa-check-square";
+                document.querySelector("form").reset();
+                button.removeAttribute("disabled");
+            }
+
+            flashModal.innerHTML = `<div id="${id}" class="flash">
+                        			  <i class="fa ${icon}"></i>
+                          			  <p class="lead" style="color:#a9a9a9">${message}</p>
+                      				</div>`;
+
+            //show flashModal
+            $('#flashModal').modal('show');
+
+            if(success){
+                window.addEventListener("click", function(){
+                    window.location.href = "/";
+                });
+            }
+
+        },
+
+        error  : function(http,status,error){
+            console.log("Error:"+error);
+            flashModal.innerHTML = `<div id="error" class="flash">
+                        			 		 <i class="fa fa-times-circle"></i>
+                          			  		<p class="lead" style="color:#a9a9a9">Something went wrong here.</p>
+                      					</div>`;
+            // set as default
+            button.style.opacity = '1';
+            button.removeAttribute("disabled");
+        }
+
+    });
+}
+
+function filterResources(e){
+    console.log("In function filter")
+    // stop default action
+    e.preventDefault();
+
+    const  button = this.children[this.children.length-1];
+
+    //Form Handling with ajax
+
+    $.ajax({
+
+        url      : '/resourcefilter',
+        method 	 : 'POST',
+        data   	 :  $(this).serialize(),
+        dataType :  'json',
+
+        beforeSend : function(http){
+            button.style.opacity = '0.7';
+            button.innerText = 'Submitting';
+            button.setAttribute("disabled", "true");
+        },
+        success    : function(response,status,http){
+            let message = response.msg,
+                element = response.param,
+                success = response.success,
+                id      = "error",
+                icon   = "fa-times-circle",
+                flashModal = document.querySelector('#flashModal .modal-body');
+
+            if(element)  document.querySelector(`[name=${element}]`).value = "" ;
+
+            if(success) {
+                id = "success";
+                icon = "fa-check-square";
+                document.querySelector("form").reset();
+                button.removeAttribute("disabled");
+            }
+
+            flashModal.innerHTML = `<div id="${id}" class="flash">
+                        			  <i class="fa ${icon}"></i>
+                          			  <p class="lead" style="color:#a9a9a9">${message}</p>
+                      				</div>`;
+
+            //show flashModal
+            $('#flashModal').modal('show');
+
+            if(success){
+                window.addEventListener("click", function(){
+                    window.location.href = "/";
+                });
+            }
+
+        },
+
+        error  : function(http,status,error){
+            console.log("Error:"+error);
+            flashModal.innerHTML = `<div id="error" class="flash">
+                        			 		 <i class="fa fa-times-circle"></i>
+                          			  		<p class="lead" style="color:#a9a9a9">Something went wrong here.</p>
+                      					</div>`;
+            // set as default
+            button.style.opacity = '1';
+            button.removeAttribute("disabled");
+        }
+
+    });
+}
+
+
+
 function send_Token(e){
-	//stop default action
-	e.preventDefault();
+    //stop default action
+    e.preventDefault();
 
-	const  button = this.children[this.children.length-1];
+    const  button = this.children[this.children.length-1];
 
 
-	//send token request to post route
+    //send token request to post route
 
-	$.ajax({
-		url : '/sendToken',
-		method : 'POST',
-		data : $(this).serialize(),
-		dataType : 'json',
+    $.ajax({
+        url : '/sendToken',
+        method : 'POST',
+        data : $(this).serialize(),
+        dataType : 'json',
 
-		beforeSend : function(http){
-			button.style.opacity = "0.4";
-			button.setAttribute("disabled", "true");
-			button.textContent = "Sending";
-		},
+        beforeSend : function(http){
+            button.style.opacity = "0.4";
+            button.setAttribute("disabled", "true");
+            button.textContent = "Sending";
+        },
 
-		success : function(response,status,http){
-			let message = response.msg,
-				success = response.success;
+        success : function(response,status,http){
+            let message = response.msg,
+                success = response.success;
 
-			if(success) {
-				document.querySelector('#flash').innerHTML = `<p class="lead" style="color:#8bc34a;font-size:1em;font-weight:500;">${message}</p>`;
-				resetToken.reset();
-			}else{
-				document.querySelector('#flash').innerHTML = `<p class="lead" style="color:#f44336;font-size:1em;font-weight:500;">${message}</p>`;
-				resetToken.reset();
-			}
+            if(success) {
+                document.querySelector('#flash').innerHTML = `<p class="lead" style="color:#8bc34a;font-size:1em;font-weight:500;">${message}</p>`;
+                resetToken.reset();
+            }else{
+                document.querySelector('#flash').innerHTML = `<p class="lead" style="color:#f44336;font-size:1em;font-weight:500;">${message}</p>`;
+                resetToken.reset();
+            }
 
-			//set default
-			button.style.opacity = "1";
-			button.removeAttribute("disabled");
-			button.textContent = "Reset";
+            //set default
+            button.style.opacity = "1";
+            button.removeAttribute("disabled");
+            button.textContent = "Reset";
 
-		},
+        },
 
-		error : function(http,status,error){
-		    console.log("Error:"+error);
-			document.querySelector('#flash').innerHTML = `<p class="lead" style="color:#f44336;font-size:1em;font-weight:500;">Something wents wrong.</p>`;
-			resetToken.reset();
-		}
-	});
+        error : function(http,status,error){
+            console.log("Error:"+error);
+            document.querySelector('#flash').innerHTML = `<p class="lead" style="color:#f44336;font-size:1em;font-weight:500;">Something wentghgs wrong.</p>`;
+            resetToken.reset();
+        }
+    });
 
 }
 
@@ -225,127 +368,126 @@ function send_Token(e){
 function update_user(){
 
 
-  let fullname = document.querySelector('[name="fullname"]');
-  let username =  document.querySelector('[name="username"]');
-  let bio =  document.querySelector('[name="bio"]');
+    let fullname = document.querySelector('[name="fullname"]');
+    let username =  document.querySelector('[name="username"]');
+    let bio =  document.querySelector('[name="bio"]');
 
-  let data = {fullname:fullname.value,username:username.value,bio:bio.value};
+    let data = {fullname:fullname.value,username:username.value,bio:bio.value};
 
-  $.ajax({
-  	 method : 'POST',
-  	 data :   data,
-  	 dataType : 'json',
+    $.ajax({
+        method : 'POST',
+        data :   data,
+        dataType : 'json',
 
-  	 beforeSend : function(){
-  	 	document.querySelector('.btn-save').style.opacity = "0.7";
-  	 },
+        beforeSend : function(){
+            document.querySelector('.btn-save').style.opacity = "0.7";
+        },
 
-  	 success : function(response){
+        success : function(response){
 
-  	 	let message = response.msg,
-  	 	    success = response.success,
-  	 	    html;
+            let message = response.msg,
+                success = response.success,
+                html;
 
-  	 	if(success) {
+            if(success) {
 
-  	 	    html =  `<div class="alert alert-success " role="alert">
+                html =  `<div class="alert alert-success " role="alert">
                       ${message}
                     </div>`;
-          document.querySelector("#updateForm .lead").textContent = bio.value;
-          document.querySelector("#updateForm b").textContent = username.value;
-          document.querySelector("#updateForm span").textContent = fullname.value;
+                document.querySelector("#updateForm .lead").textContent = bio.value;
+                document.querySelector("#updateForm b").textContent = username.value;
+                document.querySelector("#updateForm span").textContent = fullname.value;
 
-  	 	}else{
-  	 		 html =  `<div class="alert alert-danger " role="alert">
+            }else{
+                html =  `<div class="alert alert-danger " role="alert">
                     	  ${message}
                       </div>`;
-  	 	}
+            }
 
-  	 	document.querySelector('#flash').innerHTML = html;
-  	 	document.querySelector('.btn-save').style.opacity = "1";
+            document.querySelector('#flash').innerHTML = html;
+            document.querySelector('.btn-save').style.opacity = "1";
 
-  	 },
-  	 error: function(){
-  	     console.log("Error:"+error);
-  	 	var html =  `<div class="alert alert-danger" role="alert">
-                      Something went wrong.
+        },
+        error: function(){
+            console.log("Error:"+error);
+            var html =  `<div class="alert alert-danger" role="alert">
                     </div>`;
 
             document.querySelector('#flash').innerHTML = html;
 
-  	 }
-  });
+        }
+    });
 
 
 }
 
 function change_password(id){
 
-  let oldPassword = document.querySelector('[name="oldPassword"]');
-  let newPassword =  document.querySelector('[name="newPassword"]');
-  let confirm =  document.querySelector('[name="confirmPassword"]');
+    let oldPassword = document.querySelector('[name="oldPassword"]');
+    let newPassword =  document.querySelector('[name="newPassword"]');
+    let confirm =  document.querySelector('[name="confirmPassword"]');
 
 
-  let data = {oldPassword:oldPassword.value,newPassword:newPassword.value,confirm:confirm.value};
+    let data = {oldPassword:oldPassword.value,newPassword:newPassword.value,confirm:confirm.value};
 
-  $.ajax({
-  	 url : '/change_password/'+id,
-  	 method : 'POST',
-  	 data :   data,
-  	 dataType : 'json',
+    $.ajax({
+        url : '/change_password/'+id,
+        method : 'POST',
+        data :   data,
+        dataType : 'json',
 
-  	 beforeSend : function(){
-  	 	document.querySelector('.btn-change').style.opacity = "0.7";
-  	 },
+        beforeSend : function(){
+            document.querySelector('.btn-change').style.opacity = "0.7";
+        },
 
-  	 success : function(response){
+        success : function(response){
 
-  	 	let message = response.msg,
-  	 	    success = response.success,
-  	 	    html;
+            let message = response.msg,
+                success = response.success,
+                html;
 
-  	 	if(success) {
+            if(success) {
 
-  	 	    html =  `<div class="alert alert-success " role="alert">
+                html =  `<div class="alert alert-success " role="alert">
                       ${message}
                     </div>`;
 
-  	 	}else{
-  	 		 html =  `<div class="alert alert-danger " role="alert">
+            }else{
+                html =  `<div class="alert alert-danger " role="alert">
                     	  ${message}
                       </div>`;
-  	 	}
+            }
 
-  	 	document.querySelector('#flash').innerHTML = html;
-  	 	document.querySelector('#updateForm').reset();
-  	 	document.querySelector('.btn-change').style.opacity = "1";
+            document.querySelector('#flash').innerHTML = html;
+            document.querySelector('#updateForm').reset();
+            document.querySelector('.btn-change').style.opacity = "1";
 
-  	 },
-  	 error: function(){
-  	        console.log("Error here");
-  	 		var html =  `<div class="alert alert-danger " role="alert">
-                      Something went wrong.
+        },
+        error: function(){
+            console.log("Error here");
+            var html =  `<div class="alert alert-danger " role="alert">
+                      Something went here wrong.
                     </div>`;
 
-        document.querySelector('#flash').innerHTML = html;
-  	 }
-  });
+            document.querySelector('#flash').innerHTML = html;
+        }
+    });
 
 }
 
 function updatePhoto(){
-  console.log("Update");
-  var formData = new FormData();
-      formData.append('upload',imgDialog.files[0]);
+    console.log("Update");
+    var formData = new FormData();
+    formData.append('upload',imgDialog.files[0]);
 
-      $.ajax({
+    $.ajax({
         url:'/upload',
         type: 'POST',
         data : formData,
         processData : false,
         contentType : false,
         beforeSend : function(){
-          document.querySelector('.bio img').style.opacity  = '0.4';
+            document.querySelector('.bio img').style.opacity  = '0.4';
         },
         success:function(response){
             let message = response.msg,
@@ -353,173 +495,242 @@ function updatePhoto(){
                 image   = response.image;
 
             if(success) {
-              document.querySelector('.bio img').setAttribute('src',image);
+                document.querySelector('.bio img').setAttribute('src',image);
             }
 
             document.querySelector('.bio img').style.opacity  = '1';
         }
-      });
+    });
 
 }
 
 
 function findUser(){
 
-  let userId = document.querySelector('[type="hidden"]').value;
+    let userId = document.querySelector('[type="hidden"]').value;
 
 
-  $.ajax({
-      url: '/findUser',
-      type : 'GET',
-      data : {term : this.value},
-      dataType : 'json',
-      success : function(response){
+    $.ajax({
+        url: '/findUser',
+        type : 'GET',
+        data : {term : this.value},
+        dataType : 'json',
+        success : function(response){
 
 
-        let users = response;
-        let data = users.map(user => {
-           let html  = `<li>
+            let users = response;
+            let data = users.map(user => {
+                let html  = `<li>
                         <a href="/profile/${user._id}">`;
-            if(user.image.includes("http")){
-              html += `<img src="${user.image}" alt="" class="mr-3 mt-2">`;
-            }else{
-              html += `<img src="../images/profile/${user.image}" alt="" class="mr-3 mt-2">`
-            }
-              html += `<b>${user.fullname}</b>`;
-              if(userId == user._id){
-                html += `<i class="mr-3">(you)</i>`;
-              }
-              html +=  `<span>${user.username}</span>
+                if(user.image.includes("http")){
+                    html += `<img src="${user.image}" alt="" class="mr-3 mt-2">`;
+                }else{
+                    html += `<img src="../images/profile/${user.image}" alt="" class="mr-3 mt-2">`
+                }
+                html += `<b>${user.fullname}</b>`;
+                if(userId == user._id){
+                    html += `<i class="mr-3">(you)</i>`;
+                }
+                html +=  `<span>${user.username}</span>
                         <span class="sm-msg">Followed by ${user.followers.length} persons.</span>
                       </a>
                   </li>`;
 
-              if(window.innerWidth < 768){
-                html = `<li class="px-2 py-4">
+                if(window.innerWidth < 768){
+                    html = `<li class="px-2 py-4">
                           <a href="/profile/${user._id}" style="position:relative;">`;
 
-            if(user.image.includes("http")){
+                    if(user.image.includes("http")){
 
-                html += `<img src="${user.image}" alt="" class="mr-3" style="width:70px;height:70px">`;
+                        html += `<img src="${user.image}" alt="" class="mr-3" style="width:70px;height:70px">`;
 
-            }else{
+                    }else{
 
-                html += `<img src="../images/profile/${user.image}" alt="" class="mr-3" style="width:70px;height:70px">`;
+                        html += `<img src="../images/profile/${user.image}" alt="" class="mr-3" style="width:70px;height:70px">`;
 
-            }
+                    }
 
-                 html  +=  `<b style="position:absolute;top:2%;color:#222">${user.fullname}</b>
+                    html  +=  `<b style="position:absolute;top:2%;color:#222">${user.fullname}</b>
                             <span class="mt-2">${user.username}</span>`;
 
-            if(userId != user._id){
-              isFollow = user.followers.find(user => user == userId );
-              if(!isFollow){
-                 html +=    `<button id="follow" data-user='{"id":"${user._id}"}' name="button" class="btn btn-info btn-sm" style="text-transform:uppercase;letter-spacing:1px;position: absolute;top: 17%;right:5%;">Follow</button>`;
-              }else{
-                 html +=    `<button id="unfollow" data-user='{"id":"${user._id}"}' name="button" class="btn btn-danger btn-sm" style="text-transform:uppercase;letter-spacing:1px;position: absolute;top: 17%;right:5%;">Unfollow</button>`;
-              }
-            }
+                    if(userId != user._id){
+                        isFollow = user.followers.find(user => user == userId );
+                        if(!isFollow){
+                            html +=    `<button id="follow" data-user='{"id":"${user._id}"}' name="button" class="btn btn-info btn-sm" style="text-transform:uppercase;letter-spacing:1px;position: absolute;top: 17%;right:5%;">Follow</button>`;
+                        }else{
+                            html +=    `<button id="unfollow" data-user='{"id":"${user._id}"}' name="button" class="btn btn-danger btn-sm" style="text-transform:uppercase;letter-spacing:1px;position: absolute;top: 17%;right:5%;">Unfollow</button>`;
+                        }
+                    }
 
-                 html  +=  `</a>
+                    html  +=  `</a>
                             </li>`;
-              }
+                }
 
-            return html;
-        }).join("");
+                return html;
+            }).join("");
 
-        document.querySelector('.sub-search').style.display = 'block';
-        if(response.length>0){
-            document.querySelector('.sub-search').innerHTML = (window.innerWidth>768) ? `<ul>${data}</ul>`: data;
-        }else{
-          data = `<p class="lead py-2 px-3" style="text-align:center;color:#a9a9a9;"><i class="fa fa-search mr-3"></i>No result found.</p>`;
-          document.querySelector('.sub-search').innerHTML = data;
+            document.querySelector('.sub-search').style.display = 'block';
+            if(response.length>0){
+                document.querySelector('.sub-search').innerHTML = (window.innerWidth>768) ? `<ul>${data}</ul>`: data;
+            }else{
+                data = `<p class="lead py-2 px-3" style="text-align:center;color:#a9a9a9;"><i class="fa fa-search mr-3"></i>No result found.</p>`;
+                document.querySelector('.sub-search').innerHTML = data;
+            }
         }
-      }
-  });
+    });
 
 }
 
 function add_follow(e){
 
-  let data = JSON.parse(e.target.dataset.user);
+    let data = JSON.parse(e.target.dataset.user);
 
 
-  $.ajax({
-    url: '/follow',
-    method : 'POST',
-    data : data,
-    dataType : 'json',
-    success : function(response){
-      if(response.success){
-        if(flwParent){
-           flwParent.innerHTML = `<button id="unfollow" class="btn-follow" data-user='{"id":"${data.id}"}'><i class="fa fa-user-times"></i> Unfollow</button>`;
-           followers.innerHTML = `<b>${parseInt(followers.textContent)+1}</b>`;
-         }
-        if(subSearch){
-          var button = e.target;
-          button.setAttribute('id', 'unfollow');
-          button.classList.remove('btn-info');
-          button.classList.add('btn-danger');
-          button.textContent = "unfollow";
+    $.ajax({
+        url: '/follow',
+        method : 'POST',
+        data : data,
+        dataType : 'json',
+        success : function(response){
+            if(response.success){
+                if(flwParent){
+                    flwParent.innerHTML = `<button id="unfollow" class="btn-follow" data-user='{"id":"${data.id}"}'><i class="fa fa-user-times"></i> Unfollow</button>`;
+                    followers.innerHTML = `<b>${parseInt(followers.textContent)+1}</b>`;
+                }
+                if(subSearch){
+                    var button = e.target;
+                    button.setAttribute('id', 'unfollow');
+                    button.classList.remove('btn-info');
+                    button.classList.add('btn-danger');
+                    button.textContent = "unfollow";
+                }
+            }
         }
-      }
-    }
-  });
+    });
 
 }
 
+function validate_referral(e){
+    // stop default action
+    e.preventDefault();
+
+    const  button = this.children[this.children.length-1];
+    console.log("Button");
+    //Form Handling with ajax
+    $.ajax({
+
+        url      : '/validatereferral',
+        method 	 : 'POST',
+        data   	 :  $(this).serialize(),
+        dataType :  'json',
+
+        beforeSend : function(http){
+            button.style.opacity = '0.7';
+            button.innerText = 'Submitting';
+            button.setAttribute("disabled", "true");
+        },
+        success    : function(response,status,http){
+            let message = response.msg,
+                element = response.param,
+                success = response.success,
+                id      = "error",
+                icon   = "fa-times-circle",
+                flashModal = document.querySelector('#flashModal .modal-body');
+
+            if(element) {
+                console.log(element);
+                document.querySelector(`[name=${element}]`).value = "";
+            }
+
+            if(success) {
+                id = "success";
+                icon = "fa-check-square";
+                document.querySelector("form").reset();
+            }
+
+            flashModal.innerHTML = `<div id="${id}" class="flash">
+                        			  <i class="fa ${icon}"></i>
+                          			  <p class="lead" style="color:#a9a9a9">${message}</p>
+                      				</div>`;
+
+            //show flashModal
+            $('#flashModal').modal('show');
+
+            if(success){
+                window.addEventListener("click", function(){
+                    window.location.href = "/signup";
+                });
+            }
+
+
+        },
+
+        error  : function(http,status,error){
+            console.log("Error:"+error);
+            flashModal.innerHTML = `<div id="error" class="flash">
+                        			 		 <i class="fa fa-times-circle"></i>
+                          			  		<p class="lead" style="color:#a9a9a9">Something went wrong here.</p>
+                      					</div>`;
+            // set as default
+            button.style.opacity = '1';
+            button.removeAttribute("disabled");
+        }
+
+    });
+}
+
 function delete_follow(e){
-  let data = JSON.parse(e.target.dataset.user);
+    let data = JSON.parse(e.target.dataset.user);
 
-  $.ajax({
-    url: '/unfollow',
-    method : 'POST',
-    data : data,
-    dataType : 'json',
-    success : function(response){
-      if(response.success){
-        if(flwParent){
-          flwParent.innerHTML = `<button id="follow" class="btn-follow" data-user='{"id":"${data.id}"}'><i class="fa fa-user-plus"></i> Follow</button>`;
-          followers.innerHTML = `<b>${parseInt(followers.textContent)-1}</b>`;
-        }
-        if(subSearch){
-          var button = e.target;
-          button.setAttribute('id', 'follow');
-          button.classList.remove('btn-danger');
-          button.classList.add('btn-info');
-          button.textContent = "follow";
-        }
+    $.ajax({
+        url: '/unfollow',
+        method : 'POST',
+        data : data,
+        dataType : 'json',
+        success : function(response){
+            if(response.success){
+                if(flwParent){
+                    flwParent.innerHTML = `<button id="follow" class="btn-follow" data-user='{"id":"${data.id}"}'><i class="fa fa-user-plus"></i> Follow</button>`;
+                    followers.innerHTML = `<b>${parseInt(followers.textContent)-1}</b>`;
+                }
+                if(subSearch){
+                    var button = e.target;
+                    button.setAttribute('id', 'follow');
+                    button.classList.remove('btn-danger');
+                    button.classList.add('btn-info');
+                    button.textContent = "follow";
+                }
 
-      }
-    }
-  });
+            }
+        }
+    });
 
 }
 
 function validateFile(){
 
-     var types = ['image/jpeg','image/png'];
-         types  = types.find(type => type == imgDialog.files[0].type);
-      if(!types){
+    var types = ['image/jpeg','image/png'];
+    types  = types.find(type => type == imgDialog.files[0].type);
+    if(!types){
         return false;
-      }
+    }
 
     return true;
 }
 
 function savePost(e){
 
-  e.preventDefault();
+    e.preventDefault();
 
-  let progressBar = document.querySelector('.progress-bar');
+    let progressBar = document.querySelector('.progress-bar');
 
-  if(imgDialog.files[0]){
-    if(!validateFile()){
-       window.alert("Invalid file type.");
-       return;
+    if(imgDialog.files[0]){
+        if(!validateFile()){
+            window.alert("Invalid file type.");
+            return;
+        }
     }
-  }
-  //trial
+    //trial
     function refreshDiv() { //make sure braces are on the same line as the block statement, it's a good convention in JS
 
         document.getElementById("getelebyid").innerHTML = "Some <strong>HTML</strong> <em>string</em>" ;
@@ -629,129 +840,134 @@ function savePost(e){
 // assigning events
 
 if(signup) signup.addEventListener('submit',register_user);
-
-if(resourceupload) resourceupload.addEventListener('submit',upload_resource);
+if(referral) referral.addEventListener('submit',send_referrallink);
+if(validatereferral) validatereferral.addEventListener('submit',validate_referral);
 if(resetToken) resetToken.addEventListener('submit',send_Token);
 if(cameraBtn) imgDialog.addEventListener('change', updatePhoto);
+if(filterBtn){
+    console.log("In filter resources");
+filterBtn.addEventListener('click', filterResources);
+}
+
 if(searchBtn) {
-  searchBtn.addEventListener('keyup', findUser);
-  searchBtn.addEventListener('click',() => {
-      document.querySelector('.sub-search').style.display = 'block';
-  });
+    searchBtn.addEventListener('keyup', findUser);
+    searchBtn.addEventListener('click',() => {
+        document.querySelector('.sub-search').style.display = 'block';
+    });
 }
 
 
 function triggerFollow(e){
 
     if(e.target.id == 'follow') {
-          e.preventDefault();
-          add_follow(e);
+        e.preventDefault();
+        add_follow(e);
     }
 
-   if(e.target.id == 'unfollow') {
-      e.preventDefault();
-      delete_follow(e);
-   }
+    if(e.target.id == 'unfollow') {
+        e.preventDefault();
+        delete_follow(e);
+    }
 
 }
 
 
 function hitLike(element){
 
- let id = element.target.dataset.post;
- let sound = document.querySelector("#thumbs-up");
+    let id = element.target.dataset.post;
+    let sound = document.querySelector("#thumbs-up");
 
 
- element.target.style.transition = "100ms cubic-bezier(0.42, 0.13, 0.47, 1.16)";
+    element.target.style.transition = "100ms cubic-bezier(0.42, 0.13, 0.47, 1.16)";
 
-  $.ajax({
-    url: '/toggleLike',
-    type: 'post',
-    data : {id : id},
-    dataType : 'json',
-    success : function(response){
+    $.ajax({
+        url: '/toggleLike',
+        type: 'post',
+        data : {id : id},
+        dataType : 'json',
+        success : function(response){
 
-      if(!response.success){
-        window.alert("Something went wrong");
-        return;
-      }
+            if(!response.success){
+                window.alert("Something went thgetre wrong");
+                return;
+            }
 
-        let countLikes = element.target.parentElement.querySelector('.countLikes');
-        console.log("countLikes:"+countLikes);
+            let countLikes = element.target.parentElement.querySelector('.countLikes');
+            console.log("countLikes:"+countLikes);
 
-        // play sound
-        sound.currentTime = 0;
-        sound.play();
+            // play sound
+            sound.currentTime = 0;
+            sound.play();
 
-        if(response.like) {
-          countLikes.textContent = parseInt(countLikes.textContent) + 1
-          element.target.style.transform = "scale(1.2)";
-          element.target.style.color = "#0275d8";
+            if(response.like) {
+                countLikes.textContent = parseInt(countLikes.textContent) + 1
+                element.target.style.transform = "scale(1.2)";
+                element.target.style.color = "#0275d8";
+            }
+
+            if(!response.like) {
+                countLikes.textContent = parseInt(countLikes.textContent) - 1;
+                element.target.style.transform = "scale(1.2)";
+                element.target.style.color = "#222";
+
+            }
+            setTimeout(() => {
+                element.target.style.transform = "scale(1)";
+            },150);
+
+        },
+        error:function(){
+            console.log("Error here");
+            window.alert("Something went ghgtyty wrong");
+            return;
         }
-
-        if(!response.like) {
-          countLikes.textContent = parseInt(countLikes.textContent) - 1;
-          element.target.style.transform = "scale(1.2)";
-          element.target.style.color = "#222";
-
-        }
-        setTimeout(() => {
-            element.target.style.transform = "scale(1)";
-        },150);
-
-    },
-    error:function(){
-        console.log("Error here");
-      window.alert("Something went wrong");
-      return;
-    }
-  });
+    });
 
 }
 
 function saveComment(element){
 
-   let text = element.target.parentElement.querySelector('input');
-   let id = element.target.dataset.post;
+    let text = element.target.parentElement.querySelector('input');
+    let id = element.target.dataset.post;
 
     $.ajax({
-    url: '/saveComment',
-    type: 'post',
-    data : {id : id,text:text.value.trim()},
-    dataType : 'json',
-    success : function(response){
+        url: '/saveComment',
+        type: 'post',
+        data : {id : id,text:text.value.trim()},
+        dataType : 'json',
+        success : function(response){
 
-        if(!response.success){
-          if(response.msg){
-              window.alert(response.msg);
-          }else{
-             window.alert("Something went wrong.");
-          }
-          return;
-        }
+            if(!response.success){
+                if(response.msg){
+                    window.alert(response.msg);
+                }else{
+                    window.alert("Something went wrong 123.");
+                }
+                return;
+            }
 
-         //generate content
-          let commentList = text.parentElement.parentElement.querySelector('.comment-list');
+            //generate content
+            let commentList = text.parentElement.parentElement.querySelector('.comment-list');
 
-           if(!singlePost){
-              commentList.innerHTML =  `<div class="comment my-2"><a href="/profile/${response._id}" class="mr-2">${response.fullname}</a> ${text.value.trim()}</div>
+            if(!singlePost){
+                commentList.innerHTML =  `<div class="comment my-2"><a href="/profile/${response._id}" class="mr-2">${response.fullname}</a> ${text.value.trim()}</div>
                                           <a href="/post/${id}" class="seperate ml-2">View all comments</a>
                                         `;
-           }else{
-               commentList.innerHTML =  commentList.innerHTML + `<div class="comment my-2"><a href="/profile/${response._id}" class="mr-2">${response.fullname}</a> ${text.value.trim()}</div>`;
-           }
+            }else{
+                commentList.innerHTML =  commentList.innerHTML + `<div class="comment my-2"><a href="/profile/${response._id}" class="mr-2">${response.fullname}</a> ${text.value.trim()}</div>`;
+            }
 
-        //make input empty
-          text.value = "";
+            //make input empty
+            text.value = "";
 
-    },
+        },
 
-    error:function(){
-      window.alert("Something went wrong");
-      return;
-    }
+        error:function(){
+            window.alert("Something went wrong 567");
+            return;
+        }
 
-  });
+    });
 
 }
 
@@ -763,14 +979,15 @@ if(flwParent)  flwParent.addEventListener('click',e => triggerFollow(e));
 // post form
 
 if(postForm) postForm.addEventListener('submit', savePost);
+if(resourceForm) resourceForm.addEventListener('submit',upload_resource);
 
 function trigger(e){
-   //target like
-   if(e.target.classList.contains('fa-thumbs-up')) hitLike(e);
-   // target comment
-   if(e.target.classList.contains('btn-comment')) {
-      e.preventDefault();
-      saveComment(e);
+    //target like
+    if(e.target.classList.contains('fa-thumbs-up')) hitLike(e);
+    // target comment
+    if(e.target.classList.contains('btn-comment')) {
+        e.preventDefault();
+        saveComment(e);
     }
 }
 
@@ -785,7 +1002,7 @@ if(posts) posts.addEventListener('click', (e) => {
 //single post
 if(singlePost) singlePost.addEventListener('click', (e) => {
 
-  trigger(e);
+    trigger(e);
 
 });
 
@@ -793,28 +1010,28 @@ if(singlePost) singlePost.addEventListener('click', (e) => {
 //chat system
 
 if(sendBtn){
-  sendBtn.addEventListener('click',function(){
+    sendBtn.addEventListener('click',function(){
 
-    let text  = document.querySelector('[name="textMsg"]');
+        let text  = document.querySelector('[name="textMsg"]');
 
 
-    $.ajax({
-      url:'/send',
-      method: 'POST',
-      data : {message:text.value.trim(),receiver:this.dataset.receiver,sender:this.dataset.sender},
-      dataType: 'json',
-      success:function(response){
-         if(!response.success) window.alert(response.msg);
-         console.log(response);
-         if(response.success){
-            text.value = "";
-            var html = `<span class="chatMsg outgoing">${response.data.message}</span>`;
-            document.querySelector('#textArea').innerHTML = document.querySelector('#textArea').innerHTML + html;
-          }
-      }
+        $.ajax({
+            url:'/send',
+            method: 'POST',
+            data : {message:text.value.trim(),receiver:this.dataset.receiver,sender:this.dataset.sender},
+            dataType: 'json',
+            success:function(response){
+                if(!response.success) window.alert(response.msg);
+                console.log(response);
+                if(response.success){
+                    text.value = "";
+                    var html = `<span class="chatMsg outgoing">${response.data.message}</span>`;
+                    document.querySelector('#textArea').innerHTML = document.querySelector('#textArea').innerHTML + html;
+                }
+            }
+        });
+
     });
-
-});
 }
 
 //chat box user list
@@ -822,48 +1039,51 @@ if(sendBtn){
 
 if(users){
 
-  users.forEach(user => user.addEventListener('click', function(e){
+    users.forEach(user => user.addEventListener('click', function(e) {
 
-    let imageSrc = this.firstElementChild.currentSrc;
-    let name = this.lastElementChild.innerText;
-    let receiver = this.dataset.receiver;
-    let sender =  this.dataset.sender;
-    let countMessages  = document.querySelectorAll('#chatForm span');
-    let textArea =
+        let imageSrc = this.firstElementChild.currentSrc;
+        let name = this.lastElementChild.innerText;
+        let receiver = this.dataset.receiver;
+        let sender = this.dataset.sender;
+        let countMessages = document.querySelectorAll('#chatForm span');
+        let textArea =
 
 
-    document.querySelector('.btn-send').setAttribute('data-receiver', receiver);
-    swipeChat.nextElementSibling.setAttribute('src', imageSrc);
-    swipeChat.parentElement.querySelector('b').innerText = name;
+            document.querySelector('.btn-send').setAttribute('data-receiver', receiver);
+        swipeChat.nextElementSibling.setAttribute('src', imageSrc);
+        swipeChat.parentElement.querySelector('b').innerText = name;
 
+        setInterval(getMessage,5000);
         //retreive user chat
-        $.ajax({
-            url: '/getMessage',
-            method: 'POST',
-            data : {receiver:receiver,sender:sender},
-            dataType:'json',
-            success: function(response){
-              let oldMessages = document.querySelectorAll('#textArea .incoming');
-              console.log("old messages"+oldMessages);
-              let messages = response.data;
-                let data = messages.map(message => {
-                    let html = `<span class="chatMsg ${sender!=message.sender? 'incoming':'outgoing' }">${message.message}</span>`;
-                    return html;
-                }).join(" ");
-                document.querySelector('#textArea').innerHTML =  data;
-                let newMessages = document.querySelectorAll('#textArea .incoming');
-                console.log(`OLD ${oldMessages.length} NEW ${newMessages.length}`);
-                if(oldMessages.length > 0){
-                  if(newMessages.length>oldMessages.length){
-                    console.log(`RING- ${newMessages.length} ${oldMessages.length}`);
-                      document.querySelector('#msg-new').play();
-                      document.querySelector('#chatForm').scrollTop = document.querySelector('#chatForm').scrollHeight;
-                  }
+        function getMessage(){
+            $.ajax({
+                url: '/getMessage',
+                method: 'POST',
+                data: {receiver: receiver, sender: sender},
+                dataType: 'json',
+                success: function (response) {
+                    let oldMessages = document.querySelectorAll('#textArea .incoming');
+                    console.log("old messages" + oldMessages);
+                    let messages = response.data;
+                    let data = messages.map(message => {
+                        let html = `<span class="chatMsg ${sender != message.sender ? 'incoming' : 'outgoing' }">${message.message}</span>`;
+                        return html;
+                    }).join(" ");
+                    document.querySelector('#textArea').innerHTML = data;
+                    let newMessages = document.querySelectorAll('#textArea .incoming');
+                    console.log(`OLD ${oldMessages.length} NEW ${newMessages.length}`);
+                    if (oldMessages.length > 0) {
+                        if (newMessages.length > oldMessages.length) {
+                            console.log(`RING- ${newMessages.length} ${oldMessages.length}`);
+                            document.querySelector('#msg-new').play();
+                            document.querySelector('#chatForm').scrollTop = document.querySelector('#chatForm').scrollHeight;
+                        }
+                    }
                 }
-              }
-        });
+            });
+        }
 
-  }));
+    }));
 
 
 }
@@ -873,92 +1093,92 @@ if(users){
 
 function getNotification(){
 
-   let parent = document.querySelectorAll('.notification-bar');
+    let parent = document.querySelectorAll('.notification-bar');
 
-  $.ajax({
-    url: '/getFeed',
-    type: 'GET',
-    dataType: 'json',
-    success:function(response){
+    $.ajax({
+        url: '/getFeed',
+        type: 'GET',
+        dataType: 'json',
+        success:function(response){
 
-      let countOld;
+            let countOld;
 
-       let data = response.map(data => {
-          let html;
-              if(window.innerWidth > 768){
+            let data = response.map(data => {
+                let html;
+                if(window.innerWidth > 768){
 
-                countOld = parent[0].querySelectorAll('li').length;
+                    countOld = parent[0].querySelectorAll('li').length;
 
-                html = `<li>
+                    html = `<li>
                             <a href="/post/${data.taskID}">`;
 
-                     if(data.taskByImg && data.taskByImg.includes("http")){
-                         html +=   `<img src="${data.taskByImg}" class="mb-2 rounded">`;
-                      } else {
-                         html +=   `<img src="../images/profile/${data.taskByImg}" class="mb-2 rounded">`;
-                      }
+                    if(data.taskByImg && data.taskByImg.includes("http")){
+                        html +=   `<img src="${data.taskByImg}" class="mb-2 rounded">`;
+                    } else {
+                        html +=   `<img src="../images/profile/${data.taskByImg}" class="mb-2 rounded">`;
+                    }
 
-                          html +=  `<b class="ml-3">${data.taskByName}</b> ${data.taskType == "like"?'liked your post':'commented on your post'}
+                    html +=  `<b class="ml-3">${data.taskByName}</b> ${data.taskType == "like"?'liked your post':'commented on your post'}
                                       <img src="../images/posts/${data.taskImg}" style="float:right;">
                                     </a>
                                   </li>`;
 
-              }else{
+                }else{
 
-                   countOld = parent[1].querySelectorAll('li').length;
+                    countOld = parent[1].querySelectorAll('li').length;
 
-                   html = `  <li>
+                    html = `  <li>
                                <a href="/post/${data.taskID}">`;
 
-                     if(data.taskByImg && data.taskByImg.includes("http")){
-                         html +=   `<img src="${data.taskByImg}" class="mr-3" style="width:40px;height:40px;">`;
-                     } else {
-                         html +=   `<img src="../images/profile/${data.taskByImg}" class="mr-3" style="width:40px;height:40px;">`;
-                     }
+                    if(data.taskByImg && data.taskByImg.includes("http")){
+                        html +=   `<img src="${data.taskByImg}" class="mr-3" style="width:40px;height:40px;">`;
+                    } else {
+                        html +=   `<img src="../images/profile/${data.taskByImg}" class="mr-3" style="width:40px;height:40px;">`;
+                    }
 
 
-                       html +=       ` <span><b>${data.taskByName}</b> ${data.taskType == "like"?'liked your post':'commented on your post'}</span>
+                    html +=       ` <span><b>${data.taskByName}</b> ${data.taskType == "like"?'liked your post':'commented on your post'}</span>
                                        </a>
                                        </li>`;
 
-              }
+                }
 
-        return html;
+                return html;
 
-       }).join(" ");
+            }).join(" ");
 
 
 
-      if(window.innerWidth > 768){
-          data = (data == "") ? `<p class="lead">No Notifications</p>`: data;
-          parent[0].innerHTML = data;
-          let newCount = parent[0].querySelectorAll('li').length;
-          if(countOld < newCount){
-            notifBtn[0].style.color = '#2196f3';
-          }
-      }else{
-         data = (data == "") ? `<p class="lead">No Notifications</p>`:data;
-         parent[1].innerHTML = data;
-         let newCount = parent[1].querySelectorAll('li').length;
-         if(countOld < newCount){
-            notifBtn[1].style.color = '#2196f3';
-         }
-      }
+            if(window.innerWidth > 768){
+                data = (data == "") ? `<p class="lead">No Notifications</p>`: data;
+                parent[0].innerHTML = data;
+                let newCount = parent[0].querySelectorAll('li').length;
+                if(countOld < newCount){
+                    notifBtn[0].style.color = '#2196f3';
+                }
+            }else{
+                data = (data == "") ? `<p class="lead">No Notifications</p>`:data;
+                parent[1].innerHTML = data;
+                let newCount = parent[1].querySelectorAll('li').length;
+                if(countOld < newCount){
+                    notifBtn[1].style.color = '#2196f3';
+                }
+            }
 
-    }
-  });
+        }
+    });
 
 }
 
 
 if(notifBtn.length > 0){
 
-  notifBtn.forEach(button => button.addEventListener('click',function(){
-    this.style.color = "#222";
-    getNotification();
-  }));
+    notifBtn.forEach(button => button.addEventListener('click',function(){
+        this.style.color = "#222";
+        getNotification();
+    }));
 
-  setInterval(getNotification,10000);
+    setInterval(getNotification,10000);
 
 }
 

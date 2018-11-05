@@ -21,9 +21,9 @@ function findAll(modal,object){
 
         modal.find(object,(err,data) => {
             if(err)  reject(err);
-        if(data) resolve(data);
-        return resolve();
-    });
+            if(data) resolve(data);
+            return resolve();
+        });
 
     });
 

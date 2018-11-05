@@ -9,25 +9,25 @@ var Resource = require('../models/resource');
 var db   = require('../secure/db');
 fs = require('fs'),
 
-router.get('/resourceupload',function(req,res,next){
-    User.find({_id: {$ne: req.user._id}},(err,user) => {
-        if(err) throw err;
-        if(user)
-        {
-            db.findAll(Resource)
-                .then(function(data){
-                    console.log(data);
-                    res.render('resourceupload',{title:"Steel Smiling",user:req.user,header:true,navbar:true,resources:data});
-                })
-                .catch(function(err){
-                    next(err);
-                });
+    router.get('/resourceupload',function(req,res,next){
+        User.find({_id: {$ne: req.user._id}},(err,user) => {
+            if(err) throw err;
+            if(user)
+            {
+                db.findAll(Resource)
+                    .then(function(data){
+                        console.log(data);
+                        res.render('resourceupload',{title:"Steel Smiling",user:req.user,header:true,navbar:true,resources:data});
+                    })
+                    .catch(function(err){
+                        next(err);
+                    });
             }
             else {
-            throw(err);
-        }
+                throw(err);
+            }
+        });
     });
-});
 
 
 module.exports=router;
